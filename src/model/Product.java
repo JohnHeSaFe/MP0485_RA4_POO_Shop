@@ -3,15 +3,15 @@ package model;
 public class Product {
 	private int id;
 	private String name;
-	private double publicPrice;
-	private double wholesalerPrice;
+	private Amount publicPrice;
+	private Amount wholesalerPrice;
 	private boolean available;
 	private int stock;
 	private static int totalProducts;
 
 	static double EXPIRATION_RATE = 0.60;
 
-	public Product(String name, double wholesalerPrice, boolean available, int stock) {
+	public Product(String name, Amount wholesalerPrice, Amount publicPrice, boolean available, int stock) {
 		super();
 		this.id = totalProducts + 1;
 		this.name = name;
@@ -37,19 +37,19 @@ public class Product {
 		this.name = name;
 	}
 
-	public double getPublicPrice() {
+	public Amount getPublicPrice() {
 		return publicPrice;
 	}
 
-	public void setPublicPrice(double publicPrice) {
+	public void setPublicPrice(Amount publicPrice) {
 		this.publicPrice = publicPrice;
 	}
 
-	public double getWholesalerPrice() {
+	public Amount getWholesalerPrice() {
 		return wholesalerPrice;
 	}
 
-	public void setWholesalerPrice(double wholesalerPrice) {
+	public void setWholesalerPrice(Amount wholesalerPrice) {
 		this.wholesalerPrice = wholesalerPrice;
 	}
 
@@ -78,7 +78,6 @@ public class Product {
 	}
 
 	public void expire() {
-		EXPIRATION_RATE = 0.2;
-		this.publicPrice = this.getPublicPrice() * EXPIRATION_RATE;
+		this.publicPrice.setValue(this.getPublicPrice().getValue() * EXPIRATION_RATE);
 	}
 }
