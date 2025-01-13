@@ -111,9 +111,13 @@ public class Shop {
         System.out.print("Nombre: ");
         String name = scanner.nextLine();
         
+        if (!name.isEmpty()) {
+            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        }
+        
         for (Product product : inventory) {
             if (product != null && product.getName().equalsIgnoreCase(name)) {
-                System.out.println("El producto " + name + " ya est� en el inventario");
+                System.out.println("El producto " + name + " ya está en el inventario");
                 return;
             }
         }
@@ -174,7 +178,9 @@ public class Shop {
         System.out.println("Contenido actual de la tienda:");
         for (Product product : inventory) {
             if (product != null) {
-                System.out.println(product.getName());
+                System.out.print("x" + product.getStock());
+                System.out.print(" " + product.getName());
+                System.out.println(" " + product.getPublicPrice());
             }
         }
     }
@@ -187,7 +193,12 @@ public class Shop {
         Scanner sc = new Scanner(System.in);
         System.out.println("Realizar venta, escribir nombre cliente");
         String client = sc.nextLine();
-
+        
+        if (client.isEmpty()) {
+            System.out.println("Necesario un nombre");
+            return;
+        }
+        
         // sale product until input name is not 0
         ArrayList<Product> order = new ArrayList<>();
         
@@ -211,7 +222,7 @@ public class Shop {
                 if (product.getStock() == 0) {
                     product.setAvailable(false);
                 }
-                order.add(new Product(name, product.getWholesalerPrice(), product.getPublicPrice(), product.isAvailable(), product.getStock()));
+                order.add(new Product(product.getName(), product.getWholesalerPrice(), product.getPublicPrice(), product.isAvailable(), product.getStock()));
                 System.out.println("Producto añadido con éxito");
             }
 
@@ -221,7 +232,7 @@ public class Shop {
         }
 
         totalAmount.setValue(totalAmount.getValue() * TAX_RATE);
-        cash.addValue(totalAmount.getValue()) ;
+        cash.addValue(totalAmount.getValue());
         
         Product[] orderArray = order.toArray(new Product[0]); 
         sales[salesIndex] = new Sale(client, orderArray, totalAmount);
@@ -257,7 +268,7 @@ public class Shop {
         
         for (Sale sale : sales) {
             if (sale != null) {
-                totalAmount.setValue(sale.getAmount().getValue());
+                totalAmount.addValue(sale.getAmount().getValue());
             }
         }
         
