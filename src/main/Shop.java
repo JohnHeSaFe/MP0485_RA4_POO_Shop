@@ -111,19 +111,14 @@ public class Shop {
             return;
         }
         */
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Nombre: ");
-        String name = scanner.nextLine();
-        
-        if (!name.isEmpty()) {
-            name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
-        }
+        String name = getFormattedProductName();
         
         if (findProduct(name) != null) {
             System.out.println("El producto " + name + " ya está en el inventario");
             return;
         }
         
+        Scanner scanner = new Scanner(System.in);
         System.out.print("Precio publico: ");
         Amount publicPrice = new Amount(scanner.nextDouble());
         System.out.print("Precio mayorista: ");
@@ -280,7 +275,17 @@ public class Shop {
      * delete an existent product to inventory getting data from console
      */
     public void deleteProduct() {
+        String name = getFormattedProductName();
         
+        Product product = findProduct(name);
+        
+        if (product == null) {
+            System.out.println("El producto " + name + " no está en el inventario");
+            return;
+        }
+        
+        inventory.remove(product);
+        System.out.println("El producto " + name + " ha sido eliminado del inventario");
     }
     
     /**
@@ -314,6 +319,16 @@ public class Shop {
     }
     */
 
+    public String getFormattedProductName() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nombre: ");
+        String name = scanner.nextLine();
+        
+        name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+        
+        return name;
+    }
+    
     /**
      * find product by name
      *
