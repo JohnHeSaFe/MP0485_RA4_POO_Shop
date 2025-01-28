@@ -23,7 +23,7 @@ public class Shop {
         Shop shop = new Shop();
         
         shop.loadInventory();
-
+        
         Scanner scanner = new Scanner(System.in);
         int opcion = 0;
 
@@ -40,6 +40,7 @@ public class Shop {
             System.out.println("6) Venta");
             System.out.println("7) Ver ventas");
             System.out.println("8) Mostrar total de las ventas");
+            System.out.println("9) Eliminar producto");
             System.out.println("10) Salir programa");
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
@@ -76,6 +77,9 @@ public class Shop {
                 case 8:
                     shop.showTotalSales();
                     break;
+                
+                case 9:
+                    shop.deleteProduct();
             }
         } while (opcion != 10);
     }
@@ -101,10 +105,12 @@ public class Shop {
      * add a new product to inventory getting data from console
      */
     public void addProduct() {
+        /*
         if (isInventoryFull()) {
             System.out.println("No se pueden añadir más productos");
             return;
         }
+        */
         Scanner scanner = new Scanner(System.in);
         System.out.print("Nombre: ");
         String name = scanner.nextLine();
@@ -113,11 +119,9 @@ public class Shop {
             name = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
         }
         
-        for (Product product : inventory) {
-            if (product != null && product.getName().equalsIgnoreCase(name)) {
-                System.out.println("El producto " + name + " ya está en el inventario");
-                return;
-            }
+        if (findProduct(name) != null) {
+            System.out.println("El producto " + name + " ya está en el inventario");
+            return;
         }
         
         System.out.print("Precio publico: ");
@@ -272,26 +276,35 @@ public class Shop {
         System.out.println("Total de las ventas: " + totalAmount);
     }
     
-   
+    /**
+     * delete an existent product to inventory getting data from console
+     */
+    public void deleteProduct() {
+        
+    }
+    
     /**
      * add a product to inventory
      *
      * @param product
      */
     public void addProduct(Product product) {
+        /*
         if (isInventoryFull()) {
             System.out.println("No se pueden añadir más productos, se ha alcanzado el máximo de " + inventory.size());
             return;
         }
+        */
         inventory.add(product);
         product.setPublicPrice(product.getWholesalerPrice());
     }
+
 
     /**
      * check if inventory is full or not
      *
      * @return true if inventory is full
-     */
+     
     public boolean isInventoryFull() {
         if (inventory.size() == 10) {
             return true;
@@ -299,6 +312,7 @@ public class Shop {
             return false;
         }
     }
+    */
 
     /**
      * find product by name
