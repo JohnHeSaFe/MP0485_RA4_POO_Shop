@@ -9,21 +9,19 @@ import java.util.ArrayList;
 public class Shop {
 
     private Amount cash = new Amount(100.0);
-    private Product[] inventory;
-    private int numberProducts;
-    private Sale[] sales;
-    private int salesIndex = 0;
+    private ArrayList<Product> inventory;
+    private ArrayList<Sale> sales;
 
     final static double TAX_RATE = 1.04;
 
     public Shop() {
-        inventory = new Product[10];
-        sales = new Sale[10];
+        ArrayList<Product> inventory = new ArrayList<>();
+        ArrayList<Sale> sales = new ArrayList<>();
     }
 
     public static void main(String[] args) {
         Shop shop = new Shop();
-
+        
         shop.loadInventory();
 
         Scanner scanner = new Scanner(System.in);
@@ -234,9 +232,8 @@ public class Shop {
         totalAmount.setValue(totalAmount.getValue() * TAX_RATE);
         cash.addValue(totalAmount.getValue());
         
-        Product[] orderArray = order.toArray(new Product[0]); 
-        sales[salesIndex] = new Sale(client, orderArray, totalAmount);
-        salesIndex++;
+        sales.add(new Sale(client, order, totalAmount));
+
         
         // show cost total
         System.out.println("Venta realizada con éxito, total: " + totalAmount);
@@ -283,12 +280,11 @@ public class Shop {
      */
     public void addProduct(Product product) {
         if (isInventoryFull()) {
-            System.out.println("No se pueden añadir más productos, se ha alcanzado el máximo de " + inventory.length);
+            System.out.println("No se pueden añadir más productos, se ha alcanzado el máximo de " + inventory.size());
             return;
         }
-        inventory[numberProducts] = product;
-        inventory[numberProducts].setPublicPrice(product.getWholesalerPrice());
-        numberProducts++;
+        inventory.add(product);
+        product.setPublicPrice(product.getWholesalerPrice());
     }
 
     /**
@@ -297,7 +293,7 @@ public class Shop {
      * @return true if inventory is full
      */
     public boolean isInventoryFull() {
-        if (numberProducts == 10) {
+        if (inventory.size() == 10) {
             return true;
         } else {
             return false;
@@ -311,11 +307,12 @@ public class Shop {
      * @return product found by name
      */
     public Product findProduct(String name) {
-        for (int i = 0; i < inventory.length; i++) {
-            if (inventory[i] != null && inventory[i].getName().equalsIgnoreCase(name)) {
-                return inventory[i];
+        for (Product product: inventory) {
+            if (product != null && product.getName().equalsIgnoreCase(name)) {
+                return product;
             }
         }
+
         return null;
     }
 }
