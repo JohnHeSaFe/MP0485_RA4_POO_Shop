@@ -5,6 +5,8 @@ import model.Sale;
 import model.Amount;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import model.Employee;
 
 public class Shop {
 
@@ -15,17 +17,19 @@ public class Shop {
     final static double TAX_RATE = 1.04;
 
     public Shop() {
-        ArrayList<Product> inventory = new ArrayList<>();
-        ArrayList<Sale> sales = new ArrayList<>();
+        inventory = new ArrayList<>();
+        sales = new ArrayList<>();
     }
 
     public static void main(String[] args) {
         Shop shop = new Shop();
         
+        shop.innitSession();
+        
         shop.loadInventory();
         
         Scanner scanner = new Scanner(System.in);
-        int opcion = 0;
+        int opcion;
 
         do {
             System.out.println("\n");
@@ -84,6 +88,40 @@ public class Shop {
         } while (opcion != 10);
     }
 
+    /**
+     * 
+     */
+    public void innitSession() {
+        Scanner scanner = new Scanner(System.in);
+        Employee empleado = new Employee();
+        
+        System.out.println("=============================");
+        System.out.println("Inicio de Sesión miTienda.com");
+        System.out.println("=============================");
+        
+        int user;
+        while (true) {
+            try {
+                System.out.print("Introduce número de empleado: ");
+                user = scanner.nextInt();
+                scanner.nextLine();
+            } catch(InputMismatchException e) {
+                System.err.println("Número de empleado debe ser un número entero");
+                scanner.nextLine();
+                continue;
+            }
+            
+            System.out.print("Introduce contraseña: ");
+            String password = scanner.nextLine();
+            
+            if (empleado.login(user, password) == true) {
+                return;
+            }
+            
+            System.out.println("Credenciales incorrectas. Inténtelo de nuevo.");
+        }
+    }
+    
     /**
      * load initial inventory to shop
      */
