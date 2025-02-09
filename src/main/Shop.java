@@ -6,6 +6,7 @@ import model.Amount;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import model.Client;
 import model.Employee;
 
 public class Shop {
@@ -32,8 +33,7 @@ public class Shop {
         int opcion;
 
         do {
-            System.out.println("\n");
-            System.out.println("===========================");
+            System.out.println("\n===========================");
             System.out.println("Menu principal miTienda.com");
             System.out.println("===========================");
             System.out.println("1) Contar caja");
@@ -115,10 +115,11 @@ public class Shop {
             String password = scanner.nextLine();
             
             if (empleado.login(user, password) == true) {
+                System.out.println("Login correcto");
                 return;
             }
             
-            System.out.println("Credenciales incorrectas. Inténtelo de nuevo.");
+            System.out.println("Credenciales incorrectas. Inténtelo de nuevo. \n");
         }
     }
     
@@ -227,26 +228,28 @@ public class Shop {
         // ask for client name
         Scanner sc = new Scanner(System.in);
         System.out.println("Realizar venta, escribir nombre cliente");
-        String client = sc.nextLine();
+        String nameClient = sc.nextLine();
         
-        if (client.isEmpty()) {
+        if (nameClient.isEmpty()) {
             System.out.println("Necesario un nombre");
             return;
         }
+        
+        Client client = new Client(nameClient);
         
         // sale product until input name is not 0
         ArrayList<Product> order = new ArrayList<>();
         
         Amount totalAmount = new Amount();
-        String name = "";
-        while (!name.equals("0")) {
+        String nameProduct = "";
+        while (!nameProduct.equals("0")) {
             System.out.println("Introduce el nombre del producto, escribir 0 para terminar:");
-            name = sc.nextLine();
+            nameProduct = sc.nextLine();
 
-            if (name.equals("0")) {
+            if (nameProduct.equals("0")) {
                 break;
             }
-            Product product = findProduct(name);
+            Product product = findProduct(nameProduct);
             boolean productAvailable = false;
 
             if (product != null && product.isAvailable()) {
@@ -269,11 +272,17 @@ public class Shop {
         totalAmount.setValue(totalAmount.getValue() * TAX_RATE);
         cash.addValue(totalAmount.getValue());
         
-        sales.add(new Sale(client, order, totalAmount));
-
+        Sale sale = new Sale(client, order, totalAmount);
         
+        sales.add(sale);
+
         // show cost total
         System.out.println("Venta realizada con éxito, total: " + totalAmount);
+        
+        // show 
+        if (!client.pay(totalAmount)) {
+            System.out.println("Cliente debe: " + client.getBalance());
+        }
     }
 
     /**

@@ -17,18 +17,18 @@ public class Employee extends Person implements Logable{
     private static final int EMPLOYEE_ID = 123;
     private static final String PASSWORD = "test";
     
-    public Employee (String name, int employeeId, String password) {
+    public Employee(String name) {
         super(name);
-        this.employeeId = employeeId;
-        this.password = password;
+        this.employeeId = EMPLOYEE_ID;
+        this.password = PASSWORD;
     }
     
-    public Employee () {
-        this("", 0, "");
+    public Employee() {
+        this("");
     }
     
     @Override
     public boolean login(int user, String password) {
-        return EMPLOYEE_ID == user && PASSWORD.equals(password);
+        return this.employeeId == user && this.password.equals(password);
     }
 }

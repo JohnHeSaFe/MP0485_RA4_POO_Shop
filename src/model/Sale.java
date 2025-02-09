@@ -1,26 +1,25 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Sale {
-	String client;
+	Client client;
 	ArrayList<Product> products;
 	Amount amount;
 
-	public Sale(String client, ArrayList<Product> products, Amount amount) {
+	public Sale(Client client, ArrayList<Product> products, Amount amount) {
 		super();
 		this.client = client;
 		this.products = products;
 		this.amount = amount;
 	}
 
-	public String getClient() {
+	public Client getClient() {
 		return client;
 	}
 
-	public void setClient(String client) {
-		this.client = client;
+	public void setClient(String name) {
+		this.client.setName(name);
 	}
 
 	public ArrayList<Product> getProducts() {
@@ -46,7 +45,7 @@ public class Sale {
                 productsOutput += "- " + product.getName() + "\n";
             }
             
-            return "Sale [client=" + client + ", products= \n" + productsOutput + ", amount=" + amount + "]";
+            return "Sale [client=" + client.getName() + ", products= \n" + productsOutput + ", amount=" + amount + "]";
 	}
 
 }
